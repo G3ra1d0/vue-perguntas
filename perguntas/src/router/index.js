@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
-import routes from './routes'
+import createRoutes from './routes'
 
 Vue.use(VueRouter)
 
@@ -14,10 +13,10 @@ Vue.use(VueRouter)
  * with the Router instance.
  */
 
-export default function ({ store }/* { store, ssrContext } */) {
+export default function ({ store, firebase  }/* { store, ssrContext } */) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
-    routes,
+    routes: createRoutes(store),
 
     // Leave these as they are and change in quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode
@@ -25,20 +24,6 @@ export default function ({ store }/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
-
-
-  Router.beforeEach((to, from, next) => {
-    // console.log("to: ", to)
-    // console.log("from: ", form)
-    Vue.prototype.$firebase.auth().onAuthStateChanged((user) => {      
-      if(user){
-        store.dispatch("auth/setUser", user);
-      }
-      next()
-    });
-  })
-
-
 
   return Router
 }
