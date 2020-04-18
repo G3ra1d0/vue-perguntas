@@ -22,10 +22,51 @@
             @click="leftDrawerOpen = !leftDrawerOpen"
           />
           <q-toolbar-title>
-            Toolbar
+            <router-link to="/" class="text-primary">
+              Toolbar
+            </router-link>
           </q-toolbar-title>
+          <template v-if="uid">
+            <q-avatar>
+              <img src="https://cdn.quasar.dev/img/avatar.png" />
+            </q-avatar>
+            <q-btn-dropdown flat color="primary" label="Geraldo">
+              <q-list>
+                <q-item clickable v-close-popup>
+                  <q-item-section>
+                    <q-item-label>Ver Perfil</q-item-label>
+                  </q-item-section>
+                </q-item>
 
-          <q-btn size="15px" color="primary" rounded label="Entrar" />
+                <q-item clickable v-close-popup to="/perfil">
+                  <q-item-section>
+                    <q-item-label>Editar Perfil</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="sair">
+                  <q-item-section>
+                    <q-item-label>Sair</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+            <q-btn
+              size="15px"
+              color="primary"
+              rounded
+              label="Faça Uma Pergunta"
+            />
+          </template>
+          <template v-else>
+            <q-btn
+              to="/login"
+              size="15px"
+              color="primary"
+              rounded
+              label="Entrar"
+            />
+          </template>
           <q-btn flat dense class="q-ml-md" icon="search" @click="onSearch" />
         </q-toolbar>
       </template>
@@ -49,8 +90,14 @@ export default {
     return {
       pesquisa: false,
       leftDrawerOpen: false,
-      search: ""
+      search: "",
+      uid: null,
     };
+  },
+  computed: {
+    // uid() {
+    //   return this.$store.getters["auth/getUserUid"];
+    // },
   },
   methods: {
     onSearch() {
@@ -62,15 +109,38 @@ export default {
     offSearch() {
       this.pesquisa = false;
       this.search = "";
-    }
-  }
+    },
+    async sair() {
+      await this.$firebase.auth().signOut();
+      this.$store.dispatch("auth/setUser", "");
+      localStorage.removeItem("userUid");
+      this.$router.push({ path: "/login" });
+    },
+  },
+  mounted() {
+    this.$firebase.auth().onAuthStateChanged((user) => {
+      // user.uid
+      this.uid = user ? user.uid : null;
+      // this.$store.dispatch("auth/setUser", user);
+
+      // if(uid){
+      //   this.$router.push({ path: "/"})
+      // }else{
+      //   this.$router.push({ path: "/login"})
+      // }
+    });
+  },
 };
 </script>
 
-<style >
+<style>
 .fixed {
   position: fixed;
   right: 0;
   left: 0;
+}
+
+a {
+  text-decoration: none;
 }
 </style>
