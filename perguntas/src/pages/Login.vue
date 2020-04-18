@@ -72,11 +72,13 @@ export default {
     async fazerLogin() {
       const { email, senha } = this;
       try {
+        // console.log("login", this.$firebase)
         const res = await this.$firebase
           .auth()
           .signInWithEmailAndPassword(email, senha);
-        // console.log(res)
+        // console.log(res.user.displayName)
         localStorage.setItem("userUid", res.user.uid);
+        // this.$store.dispatch("auth/setUser", res.user);
         this.$router.push({ path: "/" });
       } catch (e) {
         console.log(e);
