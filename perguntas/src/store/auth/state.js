@@ -4,7 +4,10 @@ export default function () {
       uid: '',
       photoURL: '',
       nome: '',
-      email: ''
+      email: '',
+      bio: '',
+      trabalho: '',
+      website: ''
     }
   }
 }

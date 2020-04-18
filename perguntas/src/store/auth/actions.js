@@ -1,12 +1,12 @@
-/*
-export function someAction (context) {
-}
-*/
-
 export function setUser({ commit }, payload) {
-    // emailVerified = user.emailVerified;
-    commit('setUserUid', payload.uid)
     commit('setUserEmail', payload.email)
-    commit('setUserNome', payload.displayName)
+    commit('setUserNome', payload.nome)
     commit('setUserPhotoURL', payload.photoURL)
+    commit('setUserBio', payload.bio)
+    commit('setUserTrabalho', payload.trabalho)
+    commit('setUserWebsite', payload.website)
+}
+
+export function setUserUid({commit}, payload){
+    commit('setUserUid', payload)
 }
