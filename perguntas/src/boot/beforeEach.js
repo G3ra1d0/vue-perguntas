@@ -13,7 +13,7 @@ export default async ({ router, store, Vue }) => {
     FirebaseApp.auth().onAuthStateChanged((user) => {      
       if(user){
         store.dispatch("auth/setUserUid", user.uid);
-        Axios.get(`users/${user.uid}.json`).then(response => {
+        Axios.get(`users/${user.uid}.json`).then( response => {
             store.dispatch("auth/setUser", response.data);
             next()
         })

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore' 
+import 'firebase/storage' 
 import 'firebase/database'
 
 const config = {
