@@ -16,7 +16,17 @@ const routes = [{
                     next('/login')
                 }
             }
-        }
+        },
+        { 
+            path: 'pergunta/nova', component: () => import ('pages/NovaPergunta.vue'),
+            beforeEnter: (to, from, next) => {
+                if(store.getters["auth/getUserUid"]){
+                    next()
+                }else {
+                    next('/login')
+                }
+            } 
+        },
     ]
 }]
 
