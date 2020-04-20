@@ -8,6 +8,9 @@ export function getUserUid (state) {
 export function getUserEmail (state) {
     return state.user.email
 }
+export function getPhotoURL (state) {
+    return state.user.photoURL
+}
 
 export function getUserNome (state) {
     return state.user.nome

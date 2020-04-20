@@ -28,7 +28,7 @@
           </q-toolbar-title>
           <template v-if="uid">
             <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar.png" />
+              <img :src="photoURL" />
             </q-avatar>
             <q-btn-dropdown flat color="primary" label="Geraldo">
               <q-list>
@@ -56,6 +56,7 @@
               color="primary"
               rounded
               label="Faça Uma Pergunta"
+              to="/pergunta/nova"
             />
           </template>
           <template v-else>
@@ -91,13 +92,16 @@ export default {
       pesquisa: false,
       leftDrawerOpen: false,
       search: "",
-      uid: null,
+      uid: null
     };
   },
   computed: {
     // uid() {
     //   return this.$store.getters["auth/getUserUid"];
     // },
+    photoURL() {
+      return this.$store.getters["auth/getPhotoURL"];
+    }
   },
   methods: {
     onSearch() {
@@ -115,10 +119,10 @@ export default {
       this.$store.dispatch("auth/setUser", "");
       localStorage.removeItem("userUid");
       this.$router.push({ path: "/login" });
-    },
+    }
   },
   mounted() {
-    this.$firebase.auth().onAuthStateChanged((user) => {
+    this.$firebase.auth().onAuthStateChanged(user => {
       // user.uid
       this.uid = user ? user.uid : null;
       // this.$store.dispatch("auth/setUser", user);
@@ -129,7 +133,7 @@ export default {
       //   this.$router.push({ path: "/login"})
       // }
     });
-  },
+  }
 };
 </script>
 
