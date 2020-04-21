@@ -113,6 +113,7 @@ export default {
   },
   mounted() {
     let storeUser = this.$store.getters["auth/getUser"];
+    console.log(storeUser);
     this.uid = storeUser.uid;
     this.email = storeUser.email;
     this.nome = storeUser.nome;

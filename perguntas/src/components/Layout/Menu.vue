@@ -30,7 +30,7 @@
             <q-avatar>
               <img :src="photoURL" />
             </q-avatar>
-            <q-btn-dropdown flat color="primary" label="Geraldo">
+            <q-btn-dropdown flat color="primary" :label="nome">
               <q-list>
                 <q-item clickable v-close-popup>
                   <q-item-section>
@@ -96,9 +96,9 @@ export default {
     };
   },
   computed: {
-    // uid() {
-    //   return this.$store.getters["auth/getUserUid"];
-    // },
+    nome() {
+      return this.$store.getters["auth/getUserNome"];
+    },
     photoURL() {
       return this.$store.getters["auth/getPhotoURL"];
     }
@@ -117,7 +117,7 @@ export default {
     async sair() {
       await this.$firebase.auth().signOut();
       this.$store.dispatch("auth/setUser", "");
-      localStorage.removeItem("userUid");
+      localStorage.clear();
       this.$router.push({ path: "/login" });
     }
   },

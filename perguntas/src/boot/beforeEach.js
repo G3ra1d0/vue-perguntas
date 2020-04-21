@@ -9,17 +9,21 @@ export default async ({ router, store, Vue }) => {
   //   store.dispatch("auth/setUser", data);
   // }
   
-  router.beforeEach((to, from, next) => {
-    FirebaseApp.auth().onAuthStateChanged((user) => {      
-      if(user){
-        store.dispatch("auth/setUserUid", user.uid);
-        Axios.get(`users/${user.uid}.json`).then( response => {
-            store.dispatch("auth/setUser", response.data);
-            next()
-        })
-      }else{
-        next()
-      }
-    });
+  router.beforeEach( async (to, from, next) => {
+    if(localStorage.getItem("userUid")){
+      store.dispatch("auth/setUserUid", localStorage.getItem("userUid") )
+      await store.dispatch("auth/setUser", JSON.parse(localStorage.getItem("user")) )
+    }else{
+      await FirebaseApp.auth().onAuthStateChanged(async (user) => {      
+        if(user){
+          store.dispatch("auth/setUserUid", user.uid);
+          await Axios.get(`users/${user.uid}.json`).then( response => {
+              store.dispatch("auth/setUser", response.data);
+            })
+          }
+        });
+    }
+    
+    next()
   })
 }

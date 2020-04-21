@@ -65,26 +65,27 @@ export default {
   data() {
     return {
       email: "",
-      senha: "",
+      senha: ""
     };
   },
   methods: {
     async fazerLogin() {
-      const { email, senha } = this;
       try {
-        // console.log("login", this.$firebase)
         const res = await this.$firebase
           .auth()
-          .signInWithEmailAndPassword(email, senha);
-        // console.log(res.user.displayName)
+          .signInWithEmailAndPassword(this.email, this.senha);
+
         localStorage.setItem("userUid", res.user.uid);
-        // this.$store.dispatch("auth/setUser", res.user);
+        await this.$axios.get(`users/${res.user.uid}.json`).then(response => {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          this.$store.dispatch("auth/setUser", response.data);
+        });
         this.$router.push({ path: "/" });
       } catch (e) {
-        console.log(e);
+        console.log("error", e);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
