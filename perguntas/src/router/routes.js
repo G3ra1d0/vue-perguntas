@@ -27,6 +27,7 @@ const routes = [{
                 }
             } 
         },
+        { path: 'pergunta/:id', component: () => import ('pages/Pergunta.vue')}
     ]
 }]
 
