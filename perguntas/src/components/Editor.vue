@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
+  <div >
     <input ref="file" class="hidden" type="file" accept="image/*" />
     <q-editor
       v-model="editor"
@@ -95,6 +95,7 @@ export default {
     editor() {
       this.editor.replace("<", "&lt;");
       this.editor.replace(">", "&gt;");
+      this.$emit("texto", this.editor)
     }
   },
   methods: {
